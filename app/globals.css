@@ -1,19 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f8fafc;
+  --bg: #f0fdfa;
   --card: #ffffff;
-  --card-border: #e2e8f0;
+  --card-border: #99f6e4;
   --accent: #0d9488;
   --accent-hover: #0f766e;
   --accent-light: #ccfbf1;
-  --accent-light-border: #99f6e4;
+  --accent-light-border: #5eead4;
+  --accent-vivid: #10b981;
   --text: #0f172a;
-  --muted: #64748b;
+  --muted: #475569;
   --muted-light: #94a3b8;
-  --success: #059669;
+  --success: #10b981;
   --danger: #dc2626;
-  --input-bg: #f1f5f9;
+  --input-bg: #f0fdf4;
+  --header-bg: #0d9488;
 }
 
 body {
@@ -159,6 +161,15 @@ body {
   font-weight: 700;
   color: var(--text);
   line-height: 1.2;
+}
+
+.result-card-tip {
+  background: var(--accent-light);
+  border-color: var(--accent-light-border);
+}
+
+.result-card-tip .result-value {
+  color: var(--accent);
 }
 
 /* ─── Action buttons ─── */

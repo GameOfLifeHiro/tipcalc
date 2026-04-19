@@ -105,18 +105,21 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
-        {/* Hero */}
-        <div className="mb-7 text-center sm:text-left">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight" style={{ color: "var(--text)" }}>
-            Tip Calculator
-          </h1>
-          <p className="mt-2 text-base" style={{ color: "var(--muted)" }}>
-            Enter your bill, pick a percentage, split the check — done in seconds.
-          </p>
-        </div>
+      {/* Hero band */}
+      <div
+        className="px-4 py-10 sm:py-14 text-center"
+        style={{ background: "var(--header-bg)" }}
+      >
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+          Tip Calculator
+        </h1>
+        <p className="mt-2 text-base" style={{ color: "rgba(255,255,255,0.75)" }}>
+          Enter your bill, pick a percentage, split the check — done in seconds.
+        </p>
+      </div>
 
-        {/* Calculator */}
+      <div className="max-w-2xl mx-auto px-4 -mt-6 pb-8 sm:pb-12">
+        {/* Calculator card lifts out of the hero */}
         <TipCalculator />
 
         {/* Scenario links */}

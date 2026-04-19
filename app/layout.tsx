@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
+
+const GA_ID = "G-EEXTW3J4EV";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tipcalc.co"),
@@ -95,25 +98,46 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col">
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');
+          `}
+        </Script>
         <header
-          style={{ borderBottom: "1px solid var(--card-border)" }}
-          className="bg-white/80 backdrop-blur-sm sticky top-0 z-10 px-4 py-3"
+          className="sticky top-0 z-10 px-4 py-3"
+          style={{ background: "var(--header-bg)" }}
         >
           <div className="max-w-3xl mx-auto flex items-center justify-between">
             <a
               href="/"
               className="font-bold text-xl tracking-tight"
-              style={{ color: "var(--accent)" }}
+              style={{ color: "white" }}
             >
-              TipCalc<span style={{ color: "var(--muted-light)" }}>.co</span>
+              TipCalc<span style={{ color: "rgba(255,255,255,0.6)" }}>.co</span>
             </a>
             <nav className="flex gap-4 sm:gap-6 text-sm">
               {NAV_LINKS.map((l) => (
-                <a key={l.href} href={l.href} className="nav-link hidden sm:inline">
+                <a
+                  key={l.href}
+                  href={l.href}
+                  className="hidden sm:inline font-medium transition-opacity hover:opacity-100 opacity-80"
+                  style={{ color: "white" }}
+                >
                   {l.label}
                 </a>
               ))}
-              <a href="/tipping-guide/" className="nav-link sm:hidden">
+              <a
+                href="/tipping-guide/"
+                className="sm:hidden font-medium opacity-80 hover:opacity-100"
+                style={{ color: "white" }}
+              >
                 Guide
               </a>
             </nav>

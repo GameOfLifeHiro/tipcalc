@@ -387,14 +387,14 @@ export default function TipCalculator({
             </p>
           )}
 
-          <div className={`grid gap-3 ${split > 1 ? "grid-cols-3" : "grid-cols-2"}`}>
-            <div className="result-card">
-              <span className="result-label">Tip</span>
-              <span className="result-value">{formatUSD(result.tipAmount)}</span>
-              <span className="text-xs" style={{ color: "var(--muted)" }}>
-                {activeTip}%
-              </span>
-            </div>
+            <div className={`grid gap-3 ${split > 1 ? "grid-cols-3" : "grid-cols-2"}`}>
+              <div className="result-card result-card-tip">
+                <span className="result-label">Tip</span>
+                <span className="result-value">{formatUSD(result.tipAmount)}</span>
+                <span className="text-xs" style={{ color: "var(--accent)" }}>
+                  {activeTip}%
+                </span>
+              </div>
             <div className="result-card">
               <span className="result-label">Total</span>
               <span className="result-value">{formatUSD(result.total)}</span>
