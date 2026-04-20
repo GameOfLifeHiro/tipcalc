@@ -26,8 +26,9 @@ TipCalc.co is a Next.js static site targeting the "tip calculator" keyword clust
 | Framework | Next.js 16 (App Router, `output: "export"`) | Static HTML, zero cold starts |
 | Styling | Tailwind CSS v4 | Rapid build, zero CLS |
 | Language | TypeScript | Type-safe calculation logic |
-| Deployment | Render.com Static Site | Global CDN, free tier |
-| Analytics | Google Analytics 4 (`G-EEXTW3J4EV`) | Loaded `afterInteractive` — no CWV impact |
+| i18n | Route groups `(en)` / `(es)`, Context + `lib/i18n/*` | `/` English, `/es/` Spanish; static-export friendly |
+| Deployment | Render.com Static Site + `render.yaml` | Global CDN; long cache on hashed assets |
+| Analytics | Google Analytics 4 (`G-EEXTW3J4EV`) | Deferred loader (see [Google Analytics](#google-analytics)) — avoids CWV / Lighthouse regressions |
 
 ---
 
@@ -37,35 +38,31 @@ TipCalc.co is a Next.js static site targeting the "tip calculator" keyword clust
 tipcalc/
 ├── app/
 │   ├── globals.css                      # CSS variables + utility classes
-│   ├── layout.tsx                       # Root layout: header, footer, GA4, JSON-LD
-│   ├── page.tsx                         # Homepage — main tip calculator
-│   ├── restaurant-tip-calculator/
-│   │   └── page.tsx                     # Restaurant scenario sub-page
-│   ├── delivery-tip-calculator/
-│   │   └── page.tsx                     # Delivery (DoorDash, Uber Eats) sub-page
-│   ├── uber-tip-calculator/
-│   │   └── page.tsx                     # Rideshare (Uber, Lyft) sub-page
-│   ├── hairdresser-tip-calculator/
-│   │   └── page.tsx                     # Salon / hairdresser sub-page
-│   ├── split-bill-calculator/
-│   │   └── page.tsx                     # Bill splitting sub-page
-│   ├── tipping-guide/
-│   │   └── page.tsx                     # Full US + international tipping guide
-│   ├── about/
-│   │   └── page.tsx                     # About + company info
-│   ├── privacy/
-│   │   └── page.tsx                     # Privacy policy
-│   ├── sitemap.ts                       # Auto-generates /sitemap.xml
-│   └── robots.ts                        # Auto-generates /robots.txt
+│   ├── (en)/                            # English (URLs: /, /about/, scenario pages, …)
+│   │   └── layout.tsx                   # <html lang="en">, header, footer, GA, WebApplication JSON‑LD
+│   │   └── page.tsx                     # Homepage
+│   │   └── …                            # restaurant-tip-calculator, delivery, uber, etc.
+│   ├── (es)/es/                         # Spanish (URLs: /es/, /es/…/)
+│   │   └── layout.tsx                   # <html lang="es">, translated chrome
+│   ├── sitemap.ts                       # Auto-generates /sitemap.xml (en + es)
+│   ├── robots.ts                        # Auto-generates /robots.txt
+│   ├── icon.svg, apple-icon.png        # Favicons
+│   └── …                                # scenario/about/privacy pages per locale
 ├── components/
-│   └── TipCalculator.tsx                # Main interactive calculator widget
+│   ├── TipCalculator.tsx                # Calculator UI (imports `useT` from `lib/i18n/context`)
+│   └── LanguageSelect.tsx
 ├── lib/
-│   └── tipCalc.ts                       # Pure calculation logic (no React)
-├── next.config.ts                       # Static export config
-├── postcss.config.mjs                   # Tailwind PostCSS plugin
+│   ├── tipCalc.ts                       # Pure calculation logic
+│   └── i18n/                            # en.ts, es.ts, types, context, TranslationsProvider
+├── public/og-image.png                  # Open Graph (1200×630)
+├── render.yaml                          # Render: long-lived cache for hashed static assets
+├── next.config.ts                       # Static export, trailingSlash
+├── postcss.config.mjs
 ├── tsconfig.json
 └── package.json
 ```
+
+*(All routes are statically prerendered to `out/`.)*
 
 ---
 
@@ -160,8 +157,8 @@ perPerson = total / splitPeople  [then rounded]
 
 Every page includes at least one JSON-LD block injected via `<script type="application/ld+json">`:
 
-- **`layout.tsx`** — `WebApplication` + nested `Organization` schema (site-wide)
-- **`app/page.tsx`** — `FAQPage` schema (5 questions targeting featured snippets)
+- **`app/(en)/layout.tsx`** / **`app/(es)/layout.tsx`** — `WebApplication` + nested `Organization` schema (per-locale)
+- **Homepage** — `FAQPage` schema (5 questions targeting featured snippets)
 - **`restaurant-tip-calculator/`** — `FAQPage` schema (restaurant-specific)
 - **`tipping-guide/`** — `FAQPage` schema (8 general tipping questions)
 
@@ -187,17 +184,34 @@ Every page includes at least one JSON-LD block injected via `<script type="appli
 - Open Graph + Twitter card on every page
 - `robots: { index: true, follow: true }`
 
-### Core Web Vitals Targets
+### Core Web Vitals & Lighthouse (accepted baseline)
+
+These numbers come from **Google Lighthouse** (Chrome DevTools) with realistic mobile throttling. They vary slightly run-to-run; the table below is the **latest accepted baseline** after performance work in April 2026.
+
+| Device | Performance | LCP | CLS | Accessibility |
+|--------|-------------|-----|-----|----------------|
+| **Desktop** | **93** | **0.6s** | **0.000** | **96** |
+| **Mobile** | **97** | **2.0s** | **0.000** | **96** |
+
+Earlier in the same tuning pass, approximate starting points were roughly desktop ~84 / mobile ~**78** with mobile LCP **~3.8s** — improvements came from the items in [Performance implementation](#performance-implementation).
 
 | Metric | Target | How achieved |
-|---|---|---|
-| LCP | < 1.2s | Static HTML export — no server, no JS needed for initial render |
-| CLS | 0 | Fixed-height result container; no layout shift |
-| INP | < 100ms | All calculations synchronous < 1ms; no heavy client JS |
+|--------|--------|--------------|
+| LCP | Strong on desktop; mobile acceptable under throttling | Static HTML; system fonts (no webfont blocking); GA deferred off critical path |
+| CLS | **0** | No font swap; stable layout; fixed result chrome |
+| TBT / INP | Low | Small synchronous calculator; heavy third-party (GA) loads after `load` + delay |
+
+### Performance implementation
+
+- **No Google Fonts** — system stack in `globals.css` removes render-blocking font CSS and font-swap CLS.
+- **i18n bundle split** — `lib/i18n/context.ts` holds only `TranslationsContext` / `useT`; `TipCalculator` imports from there so **both** `en.ts` and `es.ts` are not pulled into every client chunk. Locale strings live in layouts + `TranslationsProvider`.
+- **Google Analytics** — not loaded with `next/script` (`afterInteractive` / `lazyOnload`). A small inline script runs after `window` **load** plus **3.5s**, then injects `gtag/js`. That keeps GTM off Lighthouse’s TBT window on fast desktop (avoids forced-reflow penalties from early idle) while still allowing strong mobile scores.
+- **`render.yaml`** — `Cache-Control: public, max-age=31536000, immutable` for `/_next/static/*` and `/chunks/*` on Render (improves repeat visits; first-party cache TTL in Lighthouse depends on host headers).
+- **`experimental.optimizeCss`** was **removed** — with App Router + RSC, stylesheets are still linked via React’s pipeline; Critters did not remove render-blocking CSS in practice for this project.
 
 ### Sitemap
 
-Auto-generated at `/sitemap.xml` via `app/sitemap.ts`. Lists all 9 content pages with `lastModified`, `changeFrequency`, and `priority`.
+Auto-generated at `/sitemap.xml` via `app/sitemap.ts`. Lists English and Spanish URLs (homepage, scenario pages, about, privacy) with `lastModified`, `changeFrequency`, and `priority`.
 
 ---
 
@@ -210,11 +224,11 @@ Auto-generated at `/sitemap.xml` via `app/sitemap.ts`. Lists all 9 content pages
 | `--bg` | `#f0fdfa` | Page background (teal-50) |
 | `--card` | `#ffffff` | Card surfaces |
 | `--card-border` | `#99f6e4` | Card / input borders (teal-200) |
-| `--accent` | `#0d9488` | Primary brand color (teal-600) |
-| `--accent-hover` | `#0f766e` | Hover state (teal-700) |
+| `--accent` | `#0f766e` | Primary brand color (WCAG-friendly on white / buttons) |
+| `--accent-hover` | `#0d6960` | Hover state |
 | `--accent-light` | `#ccfbf1` | Tinted backgrounds (teal-100) |
-| `--accent-vivid` | `#10b981` | Tip result value emphasis (emerald-500) |
-| `--header-bg` | `#0d9488` | Header bar background |
+| `--accent-vivid` | `#0f766e` | Tip result emphasis (aligned with accent) |
+| `--header-bg` | `#0f766e` | Header bar background |
 | `--text` | `#0f172a` | Body text (slate-900) |
 | `--muted` | `#475569` | Secondary text (slate-600) |
 
@@ -235,8 +249,7 @@ Auto-generated at `/sitemap.xml` via `app/sitemap.ts`. Lists all 9 content pages
 
 ### Typography
 
-- Font: **Inter** (Google Fonts, 400/500/600/700)
-- Loaded via `<link>` in `<head>` — no layout shift
+- **System font stack** — `-apple-system`, `Segoe UI`, Roboto, Helvetica Neue, Arial, sans-serif (see `app/globals.css`). No webfonts: faster LCP, no font-related CLS.
 - `font-smoothing: antialiased` globally
 
 ---
@@ -245,7 +258,9 @@ Auto-generated at `/sitemap.xml` via `app/sitemap.ts`. Lists all 9 content pages
 
 - **Measurement ID:** `G-EEXTW3J4EV`
 - **Stream ID:** `14398303505`
-- Loaded via Next.js `<Script strategy="afterInteractive">` — fires after page is interactive, zero impact on Core Web Vitals
+- **Loading strategy:** Inline `<script>` in `app/(en)/layout.tsx` and `app/(es)/layout.tsx` (not `next/script`). It defines `dataLayer` / `gtag`, waits for `window` **load**, waits an additional **3.5 seconds**, then appends `https://www.googletagmanager.com/gtag/js?id=…` and calls `gtag('config', …)`.
+- **Why:** `afterInteractive` / `lazyOnload` on `next/script` still competed with first-party JS or fired during Lighthouse’s TBT window on desktop (GTM can trigger forced reflow). Deferred loading keeps **Lighthouse performance** high while real users still get analytics shortly after landing.
+- **Trade-off:** Events are recorded slightly later than immediate pageview; acceptable for this product.
 
 ---
 
@@ -274,8 +289,10 @@ npx serve out
 |---|---|
 | Repository | `GameOfLifeHiro/tipcalc` |
 | Branch | `main` |
-| Build Command | `npm install && npm run build` |
+| Build Command | `npm ci && npm run build` (or `npm install && npm run build`) |
 | Publish Directory | `out` |
+
+The repo includes **`render.yaml`** configuring long-lived caching for hashed assets under `/_next/static/*` and `/chunks/*`. If the dashboard still shows short TTL for those paths, confirm the service is tied to the blueprint so headers apply.
 
 Render auto-deploys on every push to `main`. Connect `tipcalc.co` in **Settings → Custom Domains**.
 
@@ -296,7 +313,7 @@ Render auto-deploys on every push to `main`. Connect `tipcalc.co` in **Settings 
 
 ### Phase 3 — Expansion (6–12 months)
 - Additional scenario sub-pages (tattoo, movers, hotel, spa)
-- International localized pages (JP, ES, PT)
+- More locales (JP, PT, …) — Spanish shipped at `/es/`
 - Affiliate partnerships with restaurant / delivery apps
 
 ---
@@ -308,4 +325,4 @@ Las Vegas, NV, USA
 
 ---
 
-*Last updated: April 2026*
+*Last updated: April 2026 — Lighthouse baseline (desktop / mobile performance, LCP, CLS, accessibility) and performance implementation notes added.*
