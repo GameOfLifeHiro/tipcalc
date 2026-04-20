@@ -1,6 +1,6 @@
 "use client";
 
-import { TranslationsContext } from "./index";
+import { TranslationsContext } from "./context";
 import type { Translations } from "./types";
 
 export default function TranslationsProvider({

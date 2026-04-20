@@ -1,6 +1,4 @@
-"use client";
-
-import { createContext, useContext } from "react";
+// Server-side helpers — NOT marked "use client", only used in layouts/pages
 import type { Translations } from "./types";
 import en from "./en";
 import es from "./es";
@@ -11,10 +9,6 @@ export function getTranslations(locale: string): Translations {
   return LOCALES[locale] ?? en;
 }
 
-export const TranslationsContext = createContext<Translations>(en);
-
-export function useT(): Translations {
-  return useContext(TranslationsContext);
-}
-
+// Re-export the client-safe hook and context for convenience
+export { TranslationsContext, useT } from "./context";
 export type { Translations };

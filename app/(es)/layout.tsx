@@ -57,8 +57,8 @@ export default function EsLayout({ children }: { children: React.ReactNode }) {
         <link rel="alternate" hrefLang="x-default" href="https://tipcalc.co/" />
       </head>
       <body className="min-h-screen flex flex-col">
-        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
-        <Script id="gtag-init-es" strategy="afterInteractive">{`
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="lazyOnload" />
+        <Script id="gtag-init-es" strategy="lazyOnload">{`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());

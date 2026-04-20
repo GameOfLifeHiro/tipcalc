@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { calculateTip, formatUSD } from "@/lib/tipCalc";
-import { useT } from "@/lib/i18n/index";
+import { useT } from "@/lib/i18n/context";
 
 const TIP_PRESETS = [15, 18, 20, 22] as const;
 const SPLIT_MAX = 20;
