@@ -289,7 +289,7 @@ export default function TipCalculator({
 
       {!hasResult && (
         <div className="pt-5 text-center py-6"
-          style={{ borderTop: "1px solid var(--card-border)", color: "var(--muted-light)" }}
+          style={{ borderTop: "1px solid var(--card-border)", color: "var(--muted)" }}
         >
           <p className="text-sm">{c.emptyState}</p>
         </div>
