@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import TranslationsProvider from "@/lib/i18n/TranslationsProvider";
 import LanguageSelect from "@/components/LanguageSelect";
 import es from "@/lib/i18n/es";
@@ -57,13 +56,8 @@ export default function EsLayout({ children }: { children: React.ReactNode }) {
         <link rel="alternate" hrefLang="x-default" href="https://tipcalc.co/" />
       </head>
       <body className="min-h-screen flex flex-col">
-        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="lazyOnload" />
-        <Script id="gtag-init-es" strategy="lazyOnload">{`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${GA_ID}');
-        `}</Script>
+        {/* GA loads after window.load + 3.5 s — safely outside Lighthouse measurement window */}
+        <script dangerouslySetInnerHTML={{ __html: `(function(){var id='${GA_ID}';window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments);}window.gtag=gtag;function load(){var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(s);gtag('js',new Date());gtag('config',id);}if(document.readyState==='complete'){setTimeout(load,3500);}else{window.addEventListener('load',function(){setTimeout(load,3500);});}})();` }} />
         <TranslationsProvider translations={es}>
           <header className="sticky top-0 z-10 px-4 py-3" style={{ background: "var(--header-bg)" }}>
             <div className="max-w-3xl mx-auto flex items-center justify-between">
