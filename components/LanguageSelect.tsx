@@ -17,11 +17,11 @@ export default function LanguageSelect({ current, others }: Props) {
       onChange={(e) => { window.location.href = e.target.value; }}
       aria-label="Select language"
       className="text-xs rounded-lg px-2 py-1.5 cursor-pointer focus:outline-none transition-colors font-medium"
-      style={{
-        background: "rgba(255,255,255,0.15)",
-        border: "1px solid rgba(255,255,255,0.3)",
-        color: "white",
-      }}
+        style={{
+           background: "rgba(0,0,0,0.25)",
+           border: "1px solid rgba(255,255,255,0.3)",
+           color: "white",
+         }}
     >
       <option value={current.href} style={{ background: "#0d9488", color: "white" }}>
         {current.label}

@@ -52,9 +52,6 @@ export default function EsLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <link rel="alternate" hrefLang="en" href="https://tipcalc.co/" />
         <link rel="alternate" hrefLang="es" href="https://tipcalc.co/es/" />
         <link rel="alternate" hrefLang="x-default" href="https://tipcalc.co/" />
@@ -71,12 +68,12 @@ export default function EsLayout({ children }: { children: React.ReactNode }) {
           <header className="sticky top-0 z-10 px-4 py-3" style={{ background: "var(--header-bg)" }}>
             <div className="max-w-3xl mx-auto flex items-center justify-between">
               <a href="/es/" className="font-bold text-xl tracking-tight" style={{ color: "white" }}>
-                TipCalc<span style={{ color: "rgba(255,255,255,0.6)" }}>.co</span>
+                TipCalc<span style={{ color: "rgba(255,255,255,0.88)" }}>.co</span>
               </a>
               <nav className="flex items-center gap-4 sm:gap-5">
                 {NAV_LINKS.map((l) => (
                   <a key={l.href} href={l.href}
-                    className="hidden sm:inline text-sm font-medium opacity-80 hover:opacity-100 transition-opacity"
+                    className="hidden sm:inline text-sm font-medium opacity-90 hover:opacity-100 transition-opacity"
                     style={{ color: "white" }}
                   >{l.label}</a>
                 ))}

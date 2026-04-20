@@ -71,7 +71,7 @@ export default function EsHomePage() {
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
           Calculadora de Propinas
         </h1>
-        <p className="mt-2 text-base" style={{ color: "rgba(255,255,255,0.75)" }}>
+        <p className="mt-2 text-base" style={{ color: "rgba(255,255,255,0.92)" }}>
           Ingresa tu cuenta, elige el porcentaje, divide el gasto — listo en segundos.
         </p>
       </div>

@@ -113,7 +113,7 @@ export default function HomePage() {
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
           Tip Calculator
         </h1>
-        <p className="mt-2 text-base" style={{ color: "rgba(255,255,255,0.75)" }}>
+        <p className="mt-2 text-base" style={{ color: "rgba(255,255,255,0.92)" }}>
           Enter your bill, pick a percentage, split the check — done in seconds.
         </p>
       </div>
