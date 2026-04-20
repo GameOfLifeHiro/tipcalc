@@ -32,12 +32,21 @@ export const metadata: Metadata = {
     siteName: "TipCalc.co",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "TipCalc.co – Fast Tip Calculator for Every Scenario",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "TipCalc.co – Fast Tip Calculator",
     description:
       "Tip calculator with pre-tax toggle, bill splitting, and rounding for every scenario.",
+    images: ["/og-image.png"],
   },
   robots: { index: true, follow: true },
   alternates: { canonical: "https://tipcalc.co" },
