@@ -8,9 +8,19 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://tipcalc.co/split-bill-calculator/" },
 };
 
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "TipCalc.co", item: "https://tipcalc.co/" },
+    { "@type": "ListItem", position: 2, name: "Split Bill Calculator", item: "https://tipcalc.co/split-bill-calculator/" },
+  ],
+};
+
 export default function SplitBillPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <nav className="text-xs mb-5" style={{ color: "var(--muted)" }}>
         <a href="/" style={{ color: "var(--accent)" }}>TipCalc.co</a>
         {" / "}Split Bill Calculator

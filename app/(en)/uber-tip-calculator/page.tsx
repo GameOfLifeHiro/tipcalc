@@ -2,18 +2,62 @@ import type { Metadata } from "next";
 import TipCalculator from "@/components/TipCalculator";
 
 export const metadata: Metadata = {
-  title: "Uber Tip Calculator – How Much to Tip Your Uber or Lyft Driver",
+  title: "Uber Tip Calculator – How Much to Tip Your Uber Driver",
   description:
-    "Calculate the right tip for Uber, Lyft, and other rideshare services. Includes tipping norms, when to tip more, and a fast rideshare tip calculator.",
-  alternates: { canonical: "https://tipcalc.co/uber-tip-calculator/" },
+    "Calculate the right tip for Uber and other rideshare services. Includes tipping norms, when to tip more, and a fast rideshare tip calculator.",
+  alternates: {
+    canonical: "https://tipcalc.co/uber-tip-calculator/",
+    languages: {
+      en: "https://tipcalc.co/uber-tip-calculator/",
+      es: "https://tipcalc.co/es/uber-tip-calculator/",
+    },
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Should you tip Uber drivers?",
+      acceptedAnswer: { "@type": "Answer", text: "Yes, tipping Uber drivers is good etiquette. Drivers earn per mile and per minute, with platform fees deducted. Tips make up a meaningful portion of driver income. 15–20% is the standard." },
+    },
+    {
+      "@type": "Question",
+      name: "How much should I tip my Uber driver?",
+      acceptedAnswer: { "@type": "Answer", text: "15–20% of the fare is standard. For a short trip under $10, a flat $2 minimum is considerate. Uber's in-app defaults are 15%, 18%, and 20%. You can also enter a custom amount." },
+    },
+    {
+      "@type": "Question",
+      name: "Is the surge price included in the tip calculation?",
+      acceptedAnswer: { "@type": "Answer", text: "Yes — if you tip by percentage, the surge is included in the base fare you tip on. Use this calculator to enter the final fare amount shown in the app." },
+    },
+    {
+      "@type": "Question",
+      name: "Can I tip after the Uber ride?",
+      acceptedAnswer: { "@type": "Answer", text: "Yes — Uber allows you to tip for up to 30 days after a trip via the app. Go to your trip history, select the ride, and tap 'Add a tip.'" },
+    },
+  ],
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "TipCalc.co", item: "https://tipcalc.co/" },
+    { "@type": "ListItem", position: 2, name: "Uber Tip Calculator", item: "https://tipcalc.co/uber-tip-calculator/" },
+  ],
 };
 
 export default function UberTipPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <nav className="text-xs mb-5" style={{ color: "var(--muted)" }}>
         <a href="/" style={{ color: "var(--accent)" }}>TipCalc.co</a>
-        {" / "}Uber / Rideshare Tip Calculator
+        {" / "}Uber Tip Calculator
       </nav>
 
       <div className="mb-7">
@@ -74,33 +118,19 @@ export default function UberTipPage() {
           FAQ — Rideshare Tipping
         </h2>
         <div className="card divide-y" style={{ borderColor: "var(--card-border)" }}>
-          {[
-            {
-              q: "Should you tip Uber drivers?",
-              a: "Yes, tipping Uber drivers is good etiquette. Drivers earn per mile and per minute, with platform fees deducted. Tips make up a meaningful portion of driver income. 15–20% is the standard.",
-            },
-            {
-              q: "How much should I tip Lyft?",
-              a: "15–20% of the fare is standard for Lyft. Lyft's default in-app tip options are 15%, 18%, and 20%. You can also enter a custom amount.",
-            },
-            {
-              q: "Is the surge price included in the tip calculation?",
-              a: "Yes — if you tip by percentage, the surge is included in the base fare you tip on. Use this calculator to enter the final fare amount shown in the app.",
-            },
-            {
-              q: "Can I tip after the Uber ride?",
-              a: "Yes — Uber allows you to tip for up to 30 days after a trip via the app. Lyft allows tips for up to 72 hours.",
-            },
-          ].map(({ q, a }) => (
-            <details key={q} className="faq-item px-5">
-              <summary className="faq-question py-1 list-none">{q}</summary>
-              <p className="faq-answer">{a}</p>
+          {faqSchema.mainEntity.map(({ name, acceptedAnswer }) => (
+            <details key={name} className="faq-item px-5">
+              <summary className="faq-question py-1 list-none">{name}</summary>
+              <p className="faq-answer">{acceptedAnswer.text}</p>
             </details>
           ))}
         </div>
       </section>
 
       <div className="mt-12 flex flex-wrap gap-3 text-sm">
+        <a href="/lyft-tip-calculator/" style={{ color: "var(--accent)" }}>
+          Lyft Tip Calculator →
+        </a>
         <a href="/delivery-tip-calculator/" style={{ color: "var(--accent)" }}>
           Delivery Tip Calculator →
         </a>

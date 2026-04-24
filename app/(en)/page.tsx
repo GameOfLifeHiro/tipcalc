@@ -56,6 +56,18 @@ const faqSchema = {
   ],
 };
 
+const siteLinksSearchBoxSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "TipCalc.co",
+  url: "https://tipcalc.co/",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: { "@type": "EntryPoint", urlTemplate: "https://tipcalc.co/?q={search_term_string}" },
+    "query-input": "required name=search_term_string",
+  },
+};
+
 const quickTable = buildQuickTable();
 
 const SCENARIO_LINKS = [
@@ -73,8 +85,14 @@ const SCENARIO_LINKS = [
   },
   {
     href: "/uber-tip-calculator/",
-    title: "Uber / Lyft",
-    desc: "Rideshare tipping norms and suggested amounts.",
+    title: "Uber",
+    desc: "Uber tipping norms and suggested amounts.",
+    tip: "15–20%",
+  },
+  {
+    href: "/lyft-tip-calculator/",
+    title: "Lyft",
+    desc: "How much to tip your Lyft driver and when.",
     tip: "15–20%",
   },
   {
@@ -100,10 +118,8 @@ const SCENARIO_LINKS = [
 export default function HomePage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteLinksSearchBoxSchema) }} />
 
       {/* Hero band */}
       <div

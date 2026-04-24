@@ -8,9 +8,47 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://tipcalc.co/hairdresser-tip-calculator/" },
 };
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "How much should I tip my hairdresser?",
+      acceptedAnswer: { "@type": "Answer", text: "15–20% is standard in the US. For exceptional work (complex color, special occasions), 20–25% is appropriate. On a $100 service, that's $20." },
+    },
+    {
+      "@type": "Question",
+      name: "Should I tip on a $300 hair color appointment?",
+      acceptedAnswer: { "@type": "Answer", text: "Yes — 15–20% is still the norm regardless of the total. For a $300 service, a $45–$60 tip is appropriate. If that feels like a lot, 15% ($45) is very acceptable." },
+    },
+    {
+      "@type": "Question",
+      name: "How much to tip a barber for a $25 haircut?",
+      acceptedAnswer: { "@type": "Answer", text: "A $4–$5 tip on a $25 cut is common (roughly 15–20%). Many people round up to the nearest $5 — so paying $30 total is typical." },
+    },
+    {
+      "@type": "Question",
+      name: "Do I tip at a nail salon?",
+      acceptedAnswer: { "@type": "Answer", text: "Yes — 15–20% is expected at nail salons. Cash tips are preferred by many nail technicians as they receive them directly." },
+    },
+  ],
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "TipCalc.co", item: "https://tipcalc.co/" },
+    { "@type": "ListItem", position: 2, name: "Hairdresser Tip Calculator", item: "https://tipcalc.co/hairdresser-tip-calculator/" },
+  ],
+};
+
 export default function HairdresserTipPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <nav className="text-xs mb-5" style={{ color: "var(--muted)" }}>
         <a href="/" style={{ color: "var(--accent)" }}>TipCalc.co</a>
         {" / "}Hairdresser / Salon Tip Calculator
@@ -80,27 +118,10 @@ export default function HairdresserTipPage() {
           FAQ — Salon &amp; Hairdresser Tipping
         </h2>
         <div className="card divide-y" style={{ borderColor: "var(--card-border)" }}>
-          {[
-            {
-              q: "How much should I tip my hairdresser?",
-              a: "15–20% is standard in the US. For exceptional work (complex color, special occasions), 20–25% is appropriate. On a $100 service, that's $20.",
-            },
-            {
-              q: "Should I tip on a $300 hair color appointment?",
-              a: "Yes — 15–20% is still the norm regardless of the total. For a $300 service, a $45–$60 tip is appropriate. If that feels like a lot, 15% ($45) is very acceptable.",
-            },
-            {
-              q: "How much to tip a barber for a $25 haircut?",
-              a: "A $4–$5 tip on a $25 cut is common (roughly 15–20%). Many people round up to the nearest $5 — so paying $30 total is typical.",
-            },
-            {
-              q: "Do I tip at a nail salon?",
-              a: "Yes — 15–20% is expected at nail salons. Cash tips are preferred by many nail technicians as they receive them directly.",
-            },
-          ].map(({ q, a }) => (
-            <details key={q} className="faq-item px-5">
-              <summary className="faq-question py-1 list-none">{q}</summary>
-              <p className="faq-answer">{a}</p>
+          {faqSchema.mainEntity.map(({ name, acceptedAnswer }) => (
+            <details key={name} className="faq-item px-5">
+              <summary className="faq-question py-1 list-none">{name}</summary>
+              <p className="faq-answer">{acceptedAnswer.text}</p>
             </details>
           ))}
         </div>
