@@ -10,6 +10,42 @@ export const metadata: Metadata = {
   },
 };
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "¿Cuál es el porcentaje estándar de propina en Estados Unidos?",
+      acceptedAnswer: { "@type": "Answer", text: "El estándar en EE. UU. es del 15–20% en restaurantes. El 15% para servicio adecuado, el 18% para buen servicio y el 20% para un servicio excelente." },
+    },
+    {
+      "@type": "Question",
+      name: "¿En qué países no se deja propina?",
+      acceptedAnswer: { "@type": "Answer", text: "En Japón, Corea del Sur y muchos otros países de Asia Oriental no se espera propina y puede considerarse un gesto inapropiado. El buen servicio se considera una norma profesional, no algo que requiera pago adicional." },
+    },
+    {
+      "@type": "Question",
+      name: "¿Es una falta de respeto no dejar propina en EE. UU.?",
+      acceptedAnswer: { "@type": "Answer", text: "Sí. En Estados Unidos, no dejar propina se considera una falta de educación porque meseros y muchos trabajadores de servicio perciben un salario base reducido con la expectativa de que las propinas completen sus ingresos." },
+    },
+    {
+      "@type": "Question",
+      name: "¿Cuánto se deja de propina en la habitación del hotel?",
+      acceptedAnswer: { "@type": "Answer", text: "El estándar en EE. UU. para el servicio de habitaciones es de $2–$5 por noche. Deja el efectivo en la almohada o en un lugar visible cada día, ya que puede atenderte un empleado diferente." },
+    },
+  ],
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "TipCalc.co", item: "https://tipcalc.co/es/" },
+    { "@type": "ListItem", position: 2, name: "Guía de Propinas en EE. UU.", item: "https://tipcalc.co/es/tipping-guide/" },
+  ],
+};
+
 const TIPPING_TABLE = [
   { service: "Restaurante / Cantinero", range: "15–20%", notes: "18–20% es el estándar actual" },
   { service: "Bar (trago sencillo)", range: "$1–$2 por trago", notes: "O 15–20% en cuentas grandes de bar" },
@@ -35,6 +71,8 @@ const TIPPING_TABLE = [
 export default function EsTippingGuidePage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <nav className="text-xs mb-5" style={{ color: "var(--muted)" }}>
         <a href="/es/" style={{ color: "var(--accent)" }}>TipCalc.co</a>{" / "}Guía de propinas
       </nav>

@@ -11,9 +11,47 @@ export const metadata: Metadata = {
   },
 };
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "¿Cuánto se da de propina a un estilista o peluquero?",
+      acceptedAnswer: { "@type": "Answer", text: "El estándar en EE. UU. es del 15–20% del costo del servicio. Para trabajos complejos como coloración completa o balayage, el 20–25% es apropiado." },
+    },
+    {
+      "@type": "Question",
+      name: "¿Se deja propina al dueño del salón?",
+      acceptedAnswer: { "@type": "Answer", text: "Tradicionalmente no, pero la norma ha cambiado. Hoy es perfectamente aceptable dejar propina al dueño si te hizo el servicio directamente y quedaste satisfecho." },
+    },
+    {
+      "@type": "Question",
+      name: "¿Cuánto se da de propina a un barbero?",
+      acceptedAnswer: { "@type": "Answer", text: "El 15–20% del costo del corte, o un mínimo de $2–$5 en cortes económicos. Muchas personas simplemente redondean al billete más cercano." },
+    },
+    {
+      "@type": "Question",
+      name: "¿Se deja propina en el salón de uñas?",
+      acceptedAnswer: { "@type": "Answer", text: "Sí, el 15–20% es lo esperado. Muchos técnicos de uñas prefieren propina en efectivo para recibirla de forma directa." },
+    },
+  ],
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "TipCalc.co", item: "https://tipcalc.co/es/" },
+    { "@type": "ListItem", position: 2, name: "Calculadora de Propinas para Peluquería", item: "https://tipcalc.co/es/hairdresser-tip-calculator/" },
+  ],
+};
+
 export default function EsHairdresserPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <nav className="text-xs mb-5" style={{ color: "var(--muted)" }}>
         <a href="/es/" style={{ color: "var(--accent)" }}>TipCalc.co</a>{" / "}Calculadora de propinas para peluquería
       </nav>
@@ -53,6 +91,18 @@ export default function EsHairdresserPage() {
         <p>
           Para coloraciones completas, extensiones o cortes muy elaborados, considera una propina del 20% o más. Estos servicios requieren más tiempo, habilidad y dedicación.
         </p>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="text-xl font-bold mb-4" style={{ color: "var(--text)" }}>Preguntas frecuentes</h2>
+        <div className="card divide-y" style={{ borderColor: "var(--card-border)" }}>
+          {faqSchema.mainEntity.map(({ name, acceptedAnswer }) => (
+            <details key={name} className="faq-item px-5">
+              <summary className="faq-question py-1 list-none">{name}</summary>
+              <p className="faq-answer">{acceptedAnswer.text}</p>
+            </details>
+          ))}
+        </div>
       </section>
 
       <div className="mt-12 flex flex-wrap gap-3 text-sm">

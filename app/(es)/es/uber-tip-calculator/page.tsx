@@ -11,9 +11,47 @@ export const metadata: Metadata = {
   },
 };
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "¿Se debe dejar propina en Uber?",
+      acceptedAnswer: { "@type": "Answer", text: "Sí, aunque no es obligatorio. Los conductores reciben el 100% de la propina. El estándar es del 15–20% del costo del viaje." },
+    },
+    {
+      "@type": "Question",
+      name: "¿Cuánto se deja de propina en Uber?",
+      acceptedAnswer: { "@type": "Answer", text: "El 15–20% del costo del viaje es el estándar. En viajes cortos menores a $10, un mínimo de $1–$2 es considerado. Las opciones predeterminadas en la app son 15%, 18% y 20%." },
+    },
+    {
+      "@type": "Question",
+      name: "¿Uber toma parte de la propina?",
+      acceptedAnswer: { "@type": "Answer", text: "No. Uber transfiere el 100% de la propina al conductor, ya sea que la dejes en la app o en efectivo." },
+    },
+    {
+      "@type": "Question",
+      name: "¿Cuánto tiempo tengo para dejar propina en Uber?",
+      acceptedAnswer: { "@type": "Answer", text: "Uber permite agregar propina hasta 30 días después del viaje. Ve a tu historial de viajes en la app, selecciona el viaje y toca 'Agregar propina'." },
+    },
+  ],
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "TipCalc.co", item: "https://tipcalc.co/es/" },
+    { "@type": "ListItem", position: 2, name: "Calculadora de Propinas para Uber", item: "https://tipcalc.co/es/uber-tip-calculator/" },
+  ],
+};
+
 export default function EsUberPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <nav className="text-xs mb-5" style={{ color: "var(--muted)" }}>
         <a href="/es/" style={{ color: "var(--accent)" }}>TipCalc.co</a>{" / "}Calculadora de propinas para Uber
       </nav>
@@ -54,7 +92,20 @@ export default function EsUberPage() {
         </p>
       </section>
 
+      <section className="mt-12">
+        <h2 className="text-xl font-bold mb-4" style={{ color: "var(--text)" }}>Preguntas frecuentes</h2>
+        <div className="card divide-y" style={{ borderColor: "var(--card-border)" }}>
+          {faqSchema.mainEntity.map(({ name, acceptedAnswer }) => (
+            <details key={name} className="faq-item px-5">
+              <summary className="faq-question py-1 list-none">{name}</summary>
+              <p className="faq-answer">{acceptedAnswer.text}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
       <div className="mt-12 flex flex-wrap gap-3 text-sm">
+        <a href="/es/lyft-tip-calculator/" style={{ color: "var(--accent)" }}>Calculadora para Lyft →</a>
         <a href="/es/delivery-tip-calculator/" style={{ color: "var(--accent)" }}>Calculadora para entrega →</a>
         <a href="/es/tipping-guide/" style={{ color: "var(--accent)" }}>Guía completa de propinas →</a>
       </div>

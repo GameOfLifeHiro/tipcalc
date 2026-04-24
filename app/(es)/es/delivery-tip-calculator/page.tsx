@@ -11,9 +11,47 @@ export const metadata: Metadata = {
   },
 };
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "¿Cuánto debo dejar de propina para entrega a domicilio?",
+      acceptedAnswer: { "@type": "Answer", text: "Un mínimo de $3–$6 o del 15–20% del total del pedido, lo que sea mayor. Deja más si hay mal tiempo, recorrido largo o pedido grande." },
+    },
+    {
+      "@type": "Question",
+      name: "¿El cargo de entrega va al repartidor?",
+      acceptedAnswer: { "@type": "Answer", text: "No directamente. Los cargos de servicio de las aplicaciones son para la empresa. La propina sí va al repartidor." },
+    },
+    {
+      "@type": "Question",
+      name: "¿Es obligatorio dejar propina en entregas a domicilio?",
+      acceptedAnswer: { "@type": "Answer", text: "No es obligatorio, pero sí muy recomendable. Los repartidores dependen de las propinas como parte importante de sus ingresos." },
+    },
+    {
+      "@type": "Question",
+      name: "¿Puedo cambiar la propina después de la entrega?",
+      acceptedAnswer: { "@type": "Answer", text: "En la mayoría de aplicaciones como DoorDash, Uber Eats y Grubhub puedes ajustar la propina después de recibir tu pedido." },
+    },
+  ],
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "TipCalc.co", item: "https://tipcalc.co/es/" },
+    { "@type": "ListItem", position: 2, name: "Calculadora de Propinas para Entrega", item: "https://tipcalc.co/es/delivery-tip-calculator/" },
+  ],
+};
+
 export default function EsDeliveryPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <nav className="text-xs mb-5" style={{ color: "var(--muted)" }}>
         <a href="/es/" style={{ color: "var(--accent)" }}>TipCalc.co</a>{" / "}Calculadora de propinas para entrega
       </nav>
@@ -69,15 +107,10 @@ export default function EsDeliveryPage() {
       <section className="mt-12">
         <h2 className="text-xl font-bold mb-4" style={{ color: "var(--text)" }}>Preguntas frecuentes</h2>
         <div className="card divide-y" style={{ borderColor: "var(--card-border)" }}>
-          {[
-            { q: "¿Cuánto debo dejar de propina para entrega a domicilio?", a: "Un mínimo de $3–$6 o del 15–20% del total del pedido, lo que sea mayor. Deja más si hay mal tiempo, recorrido largo o pedido grande." },
-            { q: "¿El cargo de entrega va al repartidor?", a: "No directamente. Los cargos de servicio de las aplicaciones son para la empresa. La propina sí va al repartidor." },
-            { q: "¿Es obligatorio dejar propina en entregas a domicilio?", a: "No es obligatorio, pero sí muy recomendable. Los repartidores dependen de las propinas como parte importante de sus ingresos." },
-            { q: "¿Puedo cambiar la propina después de la entrega?", a: "En la mayoría de aplicaciones como DoorDash, Uber Eats y Grubhub puedes ajustar la propina después de recibir tu pedido." },
-          ].map(({ q, a }) => (
-            <details key={q} className="faq-item px-5">
-              <summary className="faq-question py-1 list-none">{q}</summary>
-              <p className="faq-answer">{a}</p>
+          {faqSchema.mainEntity.map(({ name, acceptedAnswer }) => (
+            <details key={name} className="faq-item px-5">
+              <summary className="faq-question py-1 list-none">{name}</summary>
+              <p className="faq-answer">{acceptedAnswer.text}</p>
             </details>
           ))}
         </div>

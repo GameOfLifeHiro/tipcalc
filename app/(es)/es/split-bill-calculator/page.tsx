@@ -11,9 +11,19 @@ export const metadata: Metadata = {
   },
 };
 
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "TipCalc.co", item: "https://tipcalc.co/es/" },
+    { "@type": "ListItem", position: 2, name: "Calculadora para Dividir la Cuenta", item: "https://tipcalc.co/es/split-bill-calculator/" },
+  ],
+};
+
 export default function EsSplitBillPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 sm:py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <nav className="text-xs mb-5" style={{ color: "var(--muted)" }}>
         <a href="/es/" style={{ color: "var(--accent)" }}>TipCalc.co</a>{" / "}Dividir cuenta con propina
       </nav>

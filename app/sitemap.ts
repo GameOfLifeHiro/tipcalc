@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/tipping-guide/`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/about/`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${BASE}/privacy/`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
-    // Spanish
+    // Spanish URLs — also listed in /es/sitemap.xml (submit that separately in GSC)
     { url: `${BASE}/es/`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/es/restaurant-tip-calculator/`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/es/delivery-tip-calculator/`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
