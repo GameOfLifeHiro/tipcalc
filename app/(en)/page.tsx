@@ -56,18 +56,6 @@ const faqSchema = {
   ],
 };
 
-const siteLinksSearchBoxSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "TipCalc.co",
-  url: "https://tipcalc.co/",
-  potentialAction: {
-    "@type": "SearchAction",
-    target: { "@type": "EntryPoint", urlTemplate: "https://tipcalc.co/?q={search_term_string}" },
-    "query-input": "required name=search_term_string",
-  },
-};
-
 const quickTable = buildQuickTable();
 
 const SCENARIO_LINKS = [
@@ -119,7 +107,6 @@ export default function HomePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteLinksSearchBoxSchema) }} />
 
       {/* Hero band */}
       <div
