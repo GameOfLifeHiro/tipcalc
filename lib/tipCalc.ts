@@ -1,8 +1,8 @@
 export interface TipInputs {
-  billTotal: number;
+  billTotal: number;     // pre-tax subtotal when preTax=true; after-tax total when false
   tipPercent: number;
   preTax: boolean;
-  salesTaxPercent: number;
+  taxAmount: number;     // tax dollar amount copied from receipt (used when preTax=true)
   fees: number;
   serviceCharge: number;
   splitPeople: number;
@@ -20,9 +20,13 @@ export interface TipResult {
 /**
  * Core tip calculation.
  *
- * Pre-tax mode: backs out sales tax and any fees/service charge from the
- * bill total to find the true service base, then applies tip% to that base.
- * After-tax mode: applies tip% to (bill − service charge).
+ * Pre-tax mode: billTotal is the pre-tax subtotal from the receipt. The user
+ * also supplies the exact tax dollar amount from the receipt. Tip is applied
+ * to (subtotal − fees − serviceCharge); the grand total is subtotal + tax + tip.
+ *
+ * After-tax mode: billTotal is the full after-tax total. Tip is applied to
+ * (billTotal − serviceCharge); grand total is billTotal + tip.
+ *
  * Service charge is always excluded from the tip base (it's a mandatory fee).
  */
 export function calculateTip(inputs: TipInputs): TipResult {
@@ -30,7 +34,7 @@ export function calculateTip(inputs: TipInputs): TipResult {
     billTotal,
     tipPercent,
     preTax,
-    salesTaxPercent,
+    taxAmount,
     fees,
     serviceCharge,
     splitPeople,
@@ -43,20 +47,22 @@ export function calculateTip(inputs: TipInputs): TipResult {
 
   let tipBase: number;
 
-  if (preTax && salesTaxPercent > 0) {
-    // Bill total already includes tax, so back it out:
-    // tipBase = billTotal / (1 + taxRate) − fees − serviceCharge
-    const taxRate = salesTaxPercent / 100;
-    tipBase = billTotal / (1 + taxRate) - fees - serviceCharge;
+  if (preTax) {
+    // billTotal = pre-tax subtotal; tip on food cost only
+    tipBase = billTotal - fees - serviceCharge;
   } else {
-    // After-tax: exclude only the service charge
-    tipBase = billTotal - serviceCharge - (preTax ? fees : 0);
+    // billTotal = after-tax total; tip on the full bill minus mandatory charges
+    tipBase = billTotal - serviceCharge;
   }
 
   tipBase = Math.max(0, tipBase);
 
   const tipAmount = tipBase * (tipPercent / 100);
-  const total = billTotal + tipAmount;
+  // Pre-tax: grand total = subtotal + tax (from receipt) + tip
+  // After-tax: grand total = bill (already includes tax) + tip
+  const total = preTax
+    ? billTotal + taxAmount + tipAmount
+    : billTotal + tipAmount;
   const people = Math.max(1, splitPeople);
   const tipPerPerson = tipAmount / people;
   let perPerson = total / people;

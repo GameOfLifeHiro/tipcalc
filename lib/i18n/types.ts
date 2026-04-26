@@ -20,7 +20,8 @@ export interface Translations {
     advancedToggle: string;
     preTaxCheck: string;
     preTaxDesc: string;
-    salesTaxLabel: string;
+    subtotalLabel: string;
+    taxAmountLabel: string;
     feesLabel: string;
     svcChargeLabel: string;
     roundingLabel: string;
