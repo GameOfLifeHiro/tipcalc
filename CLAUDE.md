@@ -11,7 +11,7 @@ npm run lint       # ESLint
 npx serve out      # Preview the production build locally
 ```
 
-There are no tests. The build output in `out/` is committed to the repo — run `npm run build` and commit `out/` after any content or code changes.
+There are no tests. `out/` is in `.gitignore` — Render.com runs `npm ci && npm run build` itself and serves the output. Just push source changes to `main`.
 
 ## Architecture
 
