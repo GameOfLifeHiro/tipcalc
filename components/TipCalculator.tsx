@@ -28,9 +28,8 @@ export default function TipCalculator({
   );
   const [customTip, setCustomTip] = useState(String(defaultTipPercent));
   const [split, setSplit] = useState(defaultSplit);
-  const [showAdvanced, setShowAdvanced] = useState(false);
-  const [preTax, setPreTax] = useState(false);
   const [taxDollar, setTaxDollar] = useState("");
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [fees, setFees] = useState("");
   const [serviceCharge, setServiceCharge] = useState("");
   const [rounding, setRounding] = useState<"none" | "half" | "dollar">("none");
@@ -39,6 +38,7 @@ export default function TipCalculator({
 
   const billNum = parseFloat(bill) || 0;
   const activeTip = isCustom ? parseFloat(customTip) || 0 : tipPercent;
+  const preTax = (parseFloat(taxDollar) || 0) > 0;
 
   const result = calculateTip({
     billTotal: billNum,
@@ -66,12 +66,9 @@ export default function TipCalculator({
       }
     }
     if (p.get("split")) setSplit(Math.min(SPLIT_MAX, parseInt(p.get("split")!) || 1));
-    if (p.get("pretax") === "1") {
-      setPreTax(true); setShowAdvanced(true);
-      if (p.get("taxamt")) setTaxDollar(p.get("taxamt")!);
-      if (p.get("fees")) setFees(p.get("fees")!);
-      if (p.get("sc")) setServiceCharge(p.get("sc")!);
-    }
+    if (p.get("taxamt")) setTaxDollar(p.get("taxamt")!);
+    if (p.get("fees")) { setFees(p.get("fees")!); setShowAdvanced(true); }
+    if (p.get("sc")) { setServiceCharge(p.get("sc")!); setShowAdvanced(true); }
   }, []);
 
   const handleCopy = async () => {
@@ -87,12 +84,9 @@ export default function TipCalculator({
 
   const handleShare = async () => {
     const params = new URLSearchParams({ bill, tip: String(activeTip), split: String(split) });
-    if (preTax) {
-      params.set("pretax", "1");
-      if (taxDollar) params.set("taxamt", taxDollar);
-      if (fees) params.set("fees", fees);
-      if (serviceCharge) params.set("sc", serviceCharge);
-    }
+    if (taxDollar) params.set("taxamt", taxDollar);
+    if (fees) params.set("fees", fees);
+    if (serviceCharge) params.set("sc", serviceCharge);
     const url = `${window.location.origin}${window.location.pathname}?${params}`;
     await navigator.clipboard.writeText(url);
     setShareCopied(true);
@@ -105,9 +99,7 @@ export default function TipCalculator({
     <div className="card p-5 sm:p-7 space-y-6" aria-label="Tip calculator">
       {/* ── Bill Amount ── */}
       <div>
-        <label className="label" htmlFor="bill-input">
-          {preTax ? c.subtotalLabel : c.billLabel}
-        </label>
+        <label className="label" htmlFor="bill-input">{c.billLabel}</label>
         <div className="relative">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-semibold pointer-events-none" style={{ color: "var(--muted)" }}>$</span>
           <input
@@ -121,6 +113,25 @@ export default function TipCalculator({
             aria-label={c.billLabel}
           />
         </div>
+      </div>
+
+      {/* ── Tax Amount ── */}
+      <div>
+        <label className="label" htmlFor="tax-input">{c.taxAmountLabel}</label>
+        <div className="relative">
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg font-semibold pointer-events-none" style={{ color: "var(--muted)" }}>$</span>
+          <input
+            id="tax-input"
+            type="number" min="0" step="0.01"
+            value={taxDollar} onChange={(e) => setTaxDollar(e.target.value)}
+            placeholder="0.00"
+            className="input pl-9 text-lg"
+            style={{ paddingLeft: "2.25rem" }}
+            inputMode="decimal" autoComplete="off"
+            aria-label={c.taxAmountLabel}
+          />
+        </div>
+        <p className="text-xs mt-1.5" style={{ color: "var(--muted-light)" }}>{c.taxAmountHint}</p>
       </div>
 
       {/* ── Tip % ── */}
@@ -181,50 +192,28 @@ export default function TipCalculator({
 
         {showAdvanced && (
           <div className="mt-4 space-y-4 pl-4" style={{ borderLeft: "2px solid var(--card-border)" }}>
-            <label className="flex items-start gap-3 cursor-pointer">
-              <input type="checkbox" checked={preTax} onChange={(e) => setPreTax(e.target.checked)}
-                className="mt-0.5 w-4 h-4 rounded cursor-pointer" style={{ accentColor: "var(--accent)" }}
-              />
-              <span className="text-sm leading-snug" style={{ color: "var(--text)" }}>
-                <span className="font-semibold">{c.preTaxCheck}</span>{" "}{c.preTaxDesc}
-              </span>
-            </label>
-
-            {preTax && (
-              <div className="grid grid-cols-3 gap-3">
-                <div>
-                  <label className="label" style={{ fontSize: "0.7rem" }}>{c.taxAmountLabel}</label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: "var(--muted)" }}>$</span>
-                    <input type="number" min="0" step="0.01" value={taxDollar}
-                      onChange={(e) => setTaxDollar(e.target.value)}
-                      className="input text-sm pl-5" placeholder="0.00" inputMode="decimal"
-                      aria-label={c.taxAmountLabel}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: "0.7rem" }}>{c.feesLabel}</label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: "var(--muted)" }}>$</span>
-                    <input type="number" min="0" step="0.01" value={fees}
-                      onChange={(e) => setFees(e.target.value)}
-                      className="input text-sm pl-5" placeholder="0" inputMode="decimal"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="label" style={{ fontSize: "0.7rem" }}>{c.svcChargeLabel}</label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: "var(--muted)" }}>$</span>
-                    <input type="number" min="0" step="0.01" value={serviceCharge}
-                      onChange={(e) => setServiceCharge(e.target.value)}
-                      className="input text-sm pl-5" placeholder="0" inputMode="decimal"
-                    />
-                  </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="label" style={{ fontSize: "0.7rem" }}>{c.feesLabel}</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: "var(--muted)" }}>$</span>
+                  <input type="number" min="0" step="0.01" value={fees}
+                    onChange={(e) => setFees(e.target.value)}
+                    className="input text-sm pl-5" placeholder="0" inputMode="decimal"
+                  />
                 </div>
               </div>
-            )}
+              <div>
+                <label className="label" style={{ fontSize: "0.7rem" }}>{c.svcChargeLabel}</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs pointer-events-none" style={{ color: "var(--muted)" }}>$</span>
+                  <input type="number" min="0" step="0.01" value={serviceCharge}
+                    onChange={(e) => setServiceCharge(e.target.value)}
+                    className="input text-sm pl-5" placeholder="0" inputMode="decimal"
+                  />
+                </div>
+              </div>
+            </div>
 
             <div>
               <label className="label" style={{ fontSize: "0.7rem" }}>{c.roundingLabel}</label>

@@ -18,10 +18,8 @@ export interface Translations {
     personSingular: string;
     personPlural: string;
     advancedToggle: string;
-    preTaxCheck: string;
-    preTaxDesc: string;
-    subtotalLabel: string;
     taxAmountLabel: string;
+    taxAmountHint: string;
     feesLabel: string;
     svcChargeLabel: string;
     roundingLabel: string;
