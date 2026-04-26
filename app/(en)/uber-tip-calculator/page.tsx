@@ -4,7 +4,7 @@ import TipCalculator from "@/components/TipCalculator";
 export const metadata: Metadata = {
   title: "Uber Tip Calculator – How Much to Tip Your Uber Driver",
   description:
-    "Calculate the right tip for Uber and other rideshare services. Includes tipping norms, when to tip more, and a fast rideshare tip calculator.",
+    "How much to tip your Uber driver? Enter your fare and get the right tip instantly. Covers Uber tipping norms, when to tip more, surge pricing, and Lyft comparison.",
   alternates: {
     canonical: "https://tipcalc.co/uber-tip-calculator/",
     languages: {

@@ -129,6 +129,25 @@ export default function DeliveryTipPage() {
         </div>
       </section>
 
+      <section className="mt-12 prose-section">
+        <h2>For Delivery Drivers: Estimating Your Tip Income</h2>
+        <p>
+          If you&apos;re a DoorDash, Uber Eats, or Grubhub driver, you can use this tip
+          calculator in reverse — enter an order subtotal and tip percentage to see what
+          you&apos;d earn on that delivery. A few benchmarks:
+        </p>
+        <ul>
+          <li><strong>$25 order at 18% tip:</strong> $4.50 tip income</li>
+          <li><strong>$50 order at 15% tip:</strong> $7.50 tip income</li>
+          <li><strong>$80 order at 20% tip:</strong> $16.00 tip income</li>
+        </ul>
+        <p>
+          Keep in mind that tips are shown to drivers before accepting on DoorDash (and
+          partially on Uber Eats). Higher-tip orders get accepted faster. Customers who
+          tip well consistently tend to receive quicker, more reliable service.
+        </p>
+      </section>
+
       <div className="mt-12 flex flex-wrap gap-3 text-sm">
         <a href="/uber-tip-calculator/" style={{ color: "var(--accent)" }}>
           Uber / Rideshare Tip Calculator →
