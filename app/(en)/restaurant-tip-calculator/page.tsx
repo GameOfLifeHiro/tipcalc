@@ -123,9 +123,10 @@ export default function RestaurantTipPage() {
           <h3>Pre-Tax vs. After-Tax at Restaurants</h3>
           <p>
             Sales tax at US restaurants averages 6–10% depending on the state. Tipping
-            on pre-tax saves a few dollars on larger bills. Toggle{" "}
-            <strong>Pre-tax tipping</strong> in Advanced options and enter your state&apos;s
-            sales tax rate to see the difference.
+            on pre-tax saves a few dollars on larger bills. Enter your bill&apos;s subtotal
+            in <strong>Bill Amount</strong> and the tax dollar amount from your receipt in
+            the <strong>Tax</strong> field — the calculator tips on the pre-tax subtotal
+            and adds the tax back into your grand total automatically.
           </p>
         </section>
 

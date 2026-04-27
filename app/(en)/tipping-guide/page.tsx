@@ -61,7 +61,7 @@ const US_TIPS = [
   { service: "Food delivery", tip: "$3–$6 or 15–20%", notes: "Whichever is higher" },
   { service: "Grocery delivery (Instacart)", tip: "15–20%", notes: "Min $5 for small orders" },
   { service: "Uber / Lyft", tip: "15–20%", notes: "More for extra help, bad weather" },
-  { service: "Taxi", tip: "15–20%", notes: "" },
+  { service: "Taxi (NYC / standard)", tip: "15–20%", notes: "NYC: tip on meter fare only, not tolls or surcharges" },
   { service: "Hairdresser / colorist", tip: "15–20%", notes: "On service only, not retail" },
   { service: "Barber", tip: "15–20% or $2–$5", notes: "" },
   { service: "Nail technician", tip: "15–20%", notes: "Cash preferred" },

@@ -89,6 +89,8 @@ export default function EsLayout({ children }: { children: React.ReactNode }) {
                   { href: "/es/delivery-tip-calculator/", label: "Entrega a domicilio" },
                   { href: "/es/uber-tip-calculator/", label: "Uber" },
                   { href: "/es/lyft-tip-calculator/", label: "Lyft" },
+                  { href: "/es/doordash-tip-calculator/", label: "DoorDash" },
+                  { href: "/es/uber-eats-tip-calculator/", label: "Uber Eats" },
                   { href: "/es/hairdresser-tip-calculator/", label: "Peluquería" },
                   { href: "/es/split-bill-calculator/", label: "Dividir cuenta" },
                   { href: "/es/tipping-guide/", label: "Guía de propinas" },

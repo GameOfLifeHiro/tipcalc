@@ -84,6 +84,18 @@ const SCENARIO_LINKS = [
     tip: "15–20%",
   },
   {
+    href: "/doordash-tip-calculator/",
+    title: "DoorDash",
+    desc: "How much to tip your Dasher — base pay explained.",
+    tip: "$3–$6",
+  },
+  {
+    href: "/uber-eats-tip-calculator/",
+    title: "Uber Eats",
+    desc: "Uber Eats tipping norms and how courier pay works.",
+    tip: "15–20%",
+  },
+  {
     href: "/hairdresser-tip-calculator/",
     title: "Hairdresser / Salon",
     desc: "Stylist, colorist, barber — how much to tip.",

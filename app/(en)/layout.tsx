@@ -108,6 +108,8 @@ export default function EnLayout({ children }: { children: React.ReactNode }) {
                   { href: "/delivery-tip-calculator/", label: "Delivery" },
                   { href: "/uber-tip-calculator/", label: "Uber" },
                   { href: "/lyft-tip-calculator/", label: "Lyft" },
+                  { href: "/doordash-tip-calculator/", label: "DoorDash" },
+                  { href: "/uber-eats-tip-calculator/", label: "Uber Eats" },
                   { href: "/hairdresser-tip-calculator/", label: "Hairdresser" },
                   { href: "/split-bill-calculator/", label: "Split Bill" },
                   { href: "/tipping-guide/", label: "Tipping Guide" },

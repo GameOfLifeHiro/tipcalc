@@ -57,6 +57,8 @@ const SCENARIO_LINKS = [
   { href: "/es/restaurant-tip-calculator/", title: "Restaurante", desc: "Cargos automáticos, propina antes de impuestos, división para grupos.", tip: "15–20%" },
   { href: "/es/delivery-tip-calculator/", title: "Entrega a domicilio", desc: "DoorDash, Uber Eats, Grubhub — cuánto dejar y cuándo.", tip: "$3–$6" },
   { href: "/es/uber-tip-calculator/", title: "Uber / Lyft", desc: "Normas de propina en rideshare y montos sugeridos.", tip: "15–20%" },
+  { href: "/es/doordash-tip-calculator/", title: "DoorDash", desc: "Cuánto dejar a tu Dasher — cómo funciona el pago.", tip: "$3–$6" },
+  { href: "/es/uber-eats-tip-calculator/", title: "Uber Eats", desc: "Propinas en Uber Eats y cómo funciona el pago del repartidor.", tip: "15–20%" },
   { href: "/es/hairdresser-tip-calculator/", title: "Peluquería / Salón", desc: "Estilista, colorista, barbero — cuánto propina dejar.", tip: "15–20%" },
   { href: "/es/split-bill-calculator/", title: "Dividir cuenta", desc: "Divide cualquier cuenta equitativamente con opciones de redondeo.", tip: "÷ N" },
   { href: "/es/tipping-guide/", title: "Guía de propinas", desc: "Guía completa de etiqueta para propinas en EE. UU.", tip: "Todo" },
